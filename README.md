@@ -1,4 +1,4 @@
-# Vue 3 Календарь
+# Vue 3 Календарь 
 
 Этот проект представляет собой компонент календаря, разработанный с использованием Vue 3 Composition API (`<script setup>`) и Vite.
 
@@ -19,6 +19,8 @@
 *   `vue`: Версия 3+
 *   `vite`: Инструмент для сборки
 *   `date-fns`: для манипуляций с датами и локализации.
+
+# [Демонстрация](https://calendar-vue3.netlify.app/)
 
 ---
 
@@ -43,3 +45,5 @@ The main component is `AppCalendar.vue`.
 *   `vue`: Version 3+
 *   `vite`: Build tool
 *   `date-fns`: For date manipulation and localization.
+
+# [Live Demo](https://calendar-vue3.netlify.app/)
