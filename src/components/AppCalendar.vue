@@ -5,7 +5,7 @@ const availableLocales = { ru, enUS }
 </script>
 
 <script setup>
-import { ref, computed, defineEmits, defineProps } from 'vue'
+import { ref, computed } from 'vue'
 import {
   format,
   getDaysInMonth,
