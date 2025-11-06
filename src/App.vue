@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import AppCalendar from './components/AppCalendar.vue'
-import LocaleSwitcher from './components/LocaleSwitcher.vue'
+import AppCalendar from '@/components/AppCalendar.vue'
+import LocaleSwitcher from '@/components/LocaleSwitcher.vue'
 
 const selectedDate = ref(null)
 const myInitialDate = '' // Если дата не указана, будет использоваться текущая дата
