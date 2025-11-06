@@ -92,6 +92,10 @@ const days = computed(() => {
     daysArray.push(i)
   }
 
+  while (daysArray.length % 7 !== 0) {
+    daysArray.push('')
+  }
+
   return daysArray
 })
 
