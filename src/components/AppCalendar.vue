@@ -1,8 +1,21 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { format, getDaysInMonth, startOfMonth, getDay } from 'date-fns'
+import { ref, computed, defineEmits } from 'vue'
+import {
+  format,
+  getDaysInMonth,
+  startOfMonth,
+  getDay,
+  addMonths,
+  subMonths,
+  set,
+  isSameDay,
+  isToday
+} from 'date-fns'
+
+const emit = defineEmits(['date-selected'])
 
 const currentDate = ref(new Date())
+const selectedDate = ref(new Date())
 
 const monthName = computed(() => format(currentDate.value, 'MMMM yyyy'))
 
@@ -25,18 +38,57 @@ const days = computed(() => {
 
   return daysArray
 })
+
+const prevMonth = () => {
+  currentDate.value = subMonths(currentDate.value, 1)
+}
+
+const nextMonth = () => {
+  currentDate.value = addMonths(currentDate.value, 1)
+}
+
+const selectDay = (day) => {
+  if (!day) return
+  const newSelectedDate = set(currentDate.value, { date: day })
+  selectedDate.value = newSelectedDate
+  emit('date-selected', newSelectedDate)
+}
+
+const isDaySelected = (day) => {
+  if (!day) return false
+  const date = set(currentDate.value, { date: day })
+  return isSameDay(date, selectedDate.value)
+}
+
+const isDayToday = (day) => {
+  if (!day) return false
+  const date = set(currentDate.value, { date: day })
+  return isToday(date)
+}
 </script>
 
 <template>
   <div class="calendar">
     <div class="header">
+      <button @click="prevMonth">&lt;</button>
       <h2>{{ monthName }}</h2>
+      <button @click="nextMonth">&gt;</button>
     </div>
     <div class="days-of-week">
       <div v-for="day in daysOfWeek" :key="day">{{ day }}</div>
     </div>
     <div class="days-grid">
-      <div v-for="(day, index) in days" :key="index" class="day">
+      <div
+        v-for="(day, index) in days"
+        :key="index"
+        class="day"
+        :class="{
+          'not-empty': day,
+          'selected': isDaySelected(day),
+          'today': isDayToday(day)
+        }"
+        @click="selectDay(day)"
+      >
         {{ day }}
       </div>
     </div>
@@ -53,10 +105,18 @@ const days = computed(() => {
 
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 10px;
   background-color: #f5f5f5;
+}
+
+.header button {
+  background: none;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
 }
 
 .days-of-week,
@@ -82,5 +142,23 @@ const days = computed(() => {
 
 .days-grid .day:empty {
   background-color: #f9f9f9;
+}
+
+.day.not-empty {
+  cursor: pointer;
+}
+
+.day.not-empty:hover {
+  background-color: #e9e9e9;
+}
+
+.day.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.day.today {
+  font-weight: bold;
+  border: 1px solid #007bff;
 }
 </style>
