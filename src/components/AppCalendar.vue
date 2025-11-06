@@ -1,3 +1,9 @@
+<script>
+import { ru, enUS } from 'date-fns/locale'
+
+const availableLocales = { ru, enUS }
+</script>
+
 <script setup>
 import { ref, computed, defineEmits, defineProps } from 'vue'
 import {
@@ -11,7 +17,9 @@ import {
   isSameDay,
   isToday,
   parseISO,
-  isValid
+  isValid,
+  addDays,
+  startOfWeek
 } from 'date-fns'
 
 const props = defineProps({
@@ -23,6 +31,11 @@ const props = defineProps({
       const date = parseISO(value)
       return isValid(date)
     }
+  },
+  locale: {
+    type: String,
+    default: 'ru',
+    validator: (value) => Object.keys(availableLocales).includes(value)
   }
 })
 
@@ -41,15 +54,33 @@ const getInitialDate = () => {
 const currentDate = ref(getInitialDate())
 const selectedDate = ref(getInitialDate())
 
+const currentLocale = computed(() => availableLocales[props.locale])
 
-const monthName = computed(() => format(currentDate.value, 'MMMM yyyy'))
+const monthName = computed(() => {
+  const name = format(currentDate.value, 'MMMM yyyy', {
+    locale: currentLocale.value
+  })
+  return name.charAt(0).toUpperCase() + name.slice(1)
+})
 
-const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+const daysOfWeek = computed(() => {
+  const firstDay = startOfWeek(new Date(), { locale: currentLocale.value })
+  const days = []
+  for (let i = 0; i < 7; i++) {
+    const day = addDays(firstDay, i)
+    const dayName = format(day, 'EEEEEE', { locale: currentLocale.value })
+    days.push(dayName.charAt(0).toUpperCase() + dayName.slice(1))
+  }
+  return days
+})
 
 const days = computed(() => {
   const date = currentDate.value
   const daysInMonth = getDaysInMonth(date)
-  const firstDayOfMonth = getDay(startOfMonth(date))
+  
+  const firstDayOfMonthRaw = getDay(startOfMonth(date))
+  const weekStartsOn = currentLocale.value.options?.weekStartsOn ?? 0
+  const firstDayOfMonth = (firstDayOfMonthRaw - weekStartsOn + 7) % 7
 
   const daysArray = []
 
