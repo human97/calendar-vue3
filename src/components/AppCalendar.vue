@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, defineEmits } from 'vue'
+import { ref, computed, defineEmits, defineProps } from 'vue'
 import {
   format,
   getDaysInMonth,
@@ -9,13 +9,38 @@ import {
   subMonths,
   set,
   isSameDay,
-  isToday
+  isToday,
+  parseISO,
+  isValid
 } from 'date-fns'
+
+const props = defineProps({
+  initialDate: {
+    type: String,
+    default: '',
+    validator: (value) => {
+      if (value === '') return true
+      const date = parseISO(value)
+      return isValid(date)
+    }
+  }
+})
 
 const emit = defineEmits(['date-selected'])
 
-const currentDate = ref(new Date())
-const selectedDate = ref(new Date())
+const getInitialDate = () => {
+  if (props.initialDate) {
+    const parsedDate = parseISO(props.initialDate)
+    if (isValid(parsedDate)) {
+      return parsedDate
+    }
+  }
+  return new Date()
+}
+
+const currentDate = ref(getInitialDate())
+const selectedDate = ref(getInitialDate())
+
 
 const monthName = computed(() => format(currentDate.value, 'MMMM yyyy'))
 
