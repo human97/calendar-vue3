@@ -1,5 +1,45 @@
-# Vue 3 + Vite
+# Vue 3 Календарь
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Этот проект представляет собой компонент календаря, разработанный с использованием Vue 3 Composition API (`<script setup>`) и Vite.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## Функциональность
+
+*   **Переключение месяцев:** Навигация по месяцам вперед и назад.
+*   **Выбор даты:** Возможность выбрать дату кликом мыши.
+*   **Событие выбора даты:** Компонент генерирует событие `date-selected` при выборе даты, передавая выбранное значение.
+*   **Начальная дата:** Можно установить начальную дату для календаря через свойство `initial-date`. Если дата не указана, используется текущая.
+*   **Переключение языка:** Поддержка русского и английского языков для названий месяцев и дней недели.
+
+## Компонент
+
+Основной компонент - `AppCalendar.vue`.
+
+## Зависимости
+
+*   `vue`: Версия 3+
+*   `vite`: Инструмент для сборки
+*   `date-fns`: для манипуляций с датами и локализации.
+
+---
+
+# Vue 3 Calendar
+
+This project is a calendar component developed using Vue 3 Composition API (`<script setup>`) and Vite.
+
+## Features
+
+*   **Month Switching:** Navigate to the next and previous months.
+*   **Date Selection:** Ability to select a date by clicking on it.
+*   **Date Selection Event:** The component emits a `date-selected` event when a date is chosen, passing the selected value.
+*   **Initial Date:** You can set an initial date for the calendar via the `initial-date` prop. If no date is provided, the current date is used.
+*   **Language Switching:** Supports Russian and English languages for month and day names.
+
+## Component
+
+The main component is `AppCalendar.vue`.
+
+## Dependencies
+
+*   `vue`: Version 3+
+*   `vite`: Build tool
+*   `date-fns`: For date manipulation and localization.
